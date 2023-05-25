@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<projectDescription>
+	<name>VIVO-serverless-testbench</name>
+	<comment></comment>
+	<projects>
+	</projects>
+	<buildSpec>
+		<buildCommand>
+			<name>org.eclipse.jdt.core.javabuilder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
+		<buildCommand>
+			<name>org.eclipse.m2e.core.maven2Builder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
+	</buildSpec>
+	<natures>
+		<nature>org.eclipse.jdt.core.javanature</nature>
+		<nature>org.eclipse.m2e.core.maven2Nature</nature>
+	</natures>
+	<linkedResources>
+		<link>
+			<name>vitro-api-src</name>
+			<type>2</type>
+			<location>/home/ubuntu/VIVO_SRV_LESS_NEPTUNE/00-GIT/Vitro/api/src/main/java</location>
+		</link>
+		<link>
+			<name>vitro-resources</name>
+			<type>2</type>
+			<location>/home/ubuntu/VIVO_SRV_LESS_NEPTUNE/00-GIT/Vitro/api/src/main/resources</location>
+		</link>
+		<link>
+			<name>vitro-test</name>
+			<type>2</type>
+			<location>/home/ubuntu/VIVO_SRV_LESS_NEPTUNE/00-GIT/Vitro/api/src/main/java</location>
+		</link>
+		<link>
+			<name>vitro-test-resources</name>
+			<type>2</type>
+			<location>/home/ubuntu/VIVO_SRV_LESS_NEPTUNE/00-GIT/Vitro/api/src/test/resources</location>
+		</link>
+	</linkedResources>
+</projectDescription>
