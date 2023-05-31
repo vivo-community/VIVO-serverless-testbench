@@ -60,46 +60,15 @@ public class GetRenderedSearchIndividualsByVClassTest {
         ss = StartupStatus.getBean(ctx);
         session = new HttpSessionStub();
         session.setServletContext(ctx);
-        sm.contextInitialized(sce, false);
+//        sm.contextInitialized(sce, false);
+        sm.contextInitialized(sce);
     }
 
     private String vClass;
-
-    private void builPersonList() {
-        irisList = new ArrayList<>();
-        irisList.add("http://vivo-demo.uqam.ca/individual/abergel_elisabeth_uqam_ca");
-        irisList.add("http://vivo-demo.uqam.ca/individual/adjiwanou_visseho_uqam_ca");
-        irisList.add("http://vivo-demo.uqam.ca/individual/agbobli_christian_uqam_ca");
-        irisList.add("http://vivo-demo.uqam.ca/individual/ajib_wessam_uqam_ca");
-        irisList.add("http://vivo-demo.uqam.ca/individual/alhaji_ahmad_uqam_ca");
-        irisList.add("http://vivo-demo.uqam.ca/individual/alandry_aymeric_uqam_ca");
-        irisList.add("http://vivo-demo.uqam.ca/individual/alessandra_amandine_uqam_ca");
-        irisList.add("http://vivo-demo.uqam.ca/individual/cadieux_alexandre_uqam_ca");
-        irisList.add("http://vivo-demo.uqam.ca/individual/alexeeva_olga_uqam_ca");
-        irisList.add("http://vivo-demo.uqam.ca/individual/allard_s_uqam_ca");
-        irisList.add("http://vivo-demo.uqam.ca/individual/allen_marie_uqam_ca");
-        irisList.add("http://vivo-demo.uqam.ca/individual/alloing_camille_uqam_ca");
-        irisList.add("http://vivo-demo.uqam.ca/individual/amamou_salem_uqam_ca");
-        irisList.add("http://vivo-demo.uqam.ca/individual/amiot_catherine_uqam_ca");
-        irisList.add("http://vivo-demo.uqam.ca/individual/amireault_valerie_uqam_ca");
-        irisList.add("http://vivo-demo.uqam.ca/individual/ananian_priscilla_uqam_ca");
-        irisList.add("http://vivo-demo.uqam.ca/individual/anaya_arenas_ana_maria_uqam_ca");
-        irisList.add("http://vivo-demo.uqam.ca/individual/ancelovici_marcos_uqam_ca");
-        irisList.add("http://vivo-demo.uqam.ca/individual/angenot_valerie_uqam_ca");
-        irisList.add("http://vivo-demo.uqam.ca/individual/annabi_borhane_uqam_ca");
-        irisList.add("http://vivo-demo.uqam.ca/individual/Charrette_anne_marie_uqam_ca");
-        irisList.add("http://vivo-demo.uqam.ca/individual/belanger_anouk_uqam_ca");
-        irisList.add("http://vivo-demo.uqam.ca/individual/apostolov_vestislav_uqam_ca");
-        irisList.add("http://vivo-demo.uqam.ca/individual/araujo_oliveira_anderson_uqam_ca");
-        irisList.add("http://vivo-demo.uqam.ca/individual/arcand_manon_uqam_ca");
-        irisList.add("http://vivo-demo.uqam.ca/individual/archambault_denis_uqam_ca");
-        irisList.add("http://vivo-demo.uqam.ca/individual/armony_victor_uqam_ca");
-        irisList.add("http://vivo-demo.uqam.ca/individual/arroyo_pardo_paulina_uqam_ca");
-        irisList.add("http://vivo-demo.uqam.ca/individual/arseneault_paul_uqam_ca");
-        irisList.add("http://localhost:8080/vivo_i18n/individual/n6870");
-    }
+    
 
     private void buildOrganisationList() {
+        vClass = "http://vivoweb.org/ontology/core#AcademicDepartment";
         irisList = new ArrayList<>();
         irisList.add("http://vivo-demo.uqam.ca/individual/n2350");
         irisList.add("http://vivo-demo.uqam.ca/individual/n2360");
@@ -148,7 +117,6 @@ public class GetRenderedSearchIndividualsByVClassTest {
         irisList.add("http://vivo-demo.uqam.ca/individual/n2150");
         irisList.add("http://vivo-demo.uqam.ca/individual/n2160");
         irisList.add("http://vivo-demo.uqam.ca/individual/n2180");
-        vClass = "http://vivoweb.org/ontology/core#AcademicDepartment";
     }
 
     private void buildResearchList() {
@@ -201,10 +169,66 @@ public class GetRenderedSearchIndividualsByVClassTest {
     @After
     public void tearDown() throws Exception {
     }
+    @Test
+    public void testPersonsList() throws IOException {
+        vClass = "http://vivoweb.org/ontology/core#FacultyMember";
+        irisList = new ArrayList<>();
+        irisList.add("http://vivo-demo.uqam.ca/individual/abergel_elisabeth_uqam_ca");
+        irisList.add("http://vivo-demo.uqam.ca/individual/adjiwanou_visseho_uqam_ca");
+        irisList.add("http://vivo-demo.uqam.ca/individual/agbobli_christian_uqam_ca");
+        irisList.add("http://vivo-demo.uqam.ca/individual/ajib_wessam_uqam_ca");
+        irisList.add("http://vivo-demo.uqam.ca/individual/alhaji_ahmad_uqam_ca");
+        irisList.add("http://vivo-demo.uqam.ca/individual/alandry_aymeric_uqam_ca");
+        irisList.add("http://vivo-demo.uqam.ca/individual/alessandra_amandine_uqam_ca");
+        irisList.add("http://vivo-demo.uqam.ca/individual/cadieux_alexandre_uqam_ca");
+        irisList.add("http://vivo-demo.uqam.ca/individual/alexeeva_olga_uqam_ca");
+        irisList.add("http://vivo-demo.uqam.ca/individual/allard_s_uqam_ca");
+        irisList.add("http://vivo-demo.uqam.ca/individual/allen_marie_uqam_ca");
+        irisList.add("http://vivo-demo.uqam.ca/individual/alloing_camille_uqam_ca");
+        irisList.add("http://vivo-demo.uqam.ca/individual/amamou_salem_uqam_ca");
+        irisList.add("http://vivo-demo.uqam.ca/individual/amiot_catherine_uqam_ca");
+        irisList.add("http://vivo-demo.uqam.ca/individual/amireault_valerie_uqam_ca");
+        irisList.add("http://vivo-demo.uqam.ca/individual/ananian_priscilla_uqam_ca");
+        irisList.add("http://vivo-demo.uqam.ca/individual/anaya_arenas_ana_maria_uqam_ca");
+        irisList.add("http://vivo-demo.uqam.ca/individual/ancelovici_marcos_uqam_ca");
+        irisList.add("http://vivo-demo.uqam.ca/individual/angenot_valerie_uqam_ca");
+        irisList.add("http://vivo-demo.uqam.ca/individual/annabi_borhane_uqam_ca");
+        irisList.add("http://vivo-demo.uqam.ca/individual/Charrette_anne_marie_uqam_ca");
+        irisList.add("http://vivo-demo.uqam.ca/individual/belanger_anouk_uqam_ca");
+        irisList.add("http://vivo-demo.uqam.ca/individual/apostolov_vestislav_uqam_ca");
+        irisList.add("http://vivo-demo.uqam.ca/individual/araujo_oliveira_anderson_uqam_ca");
+        irisList.add("http://vivo-demo.uqam.ca/individual/arcand_manon_uqam_ca");
+        irisList.add("http://vivo-demo.uqam.ca/individual/archambault_denis_uqam_ca");
+        irisList.add("http://vivo-demo.uqam.ca/individual/armony_victor_uqam_ca");
+        irisList.add("http://vivo-demo.uqam.ca/individual/arroyo_pardo_paulina_uqam_ca");
+        irisList.add("http://vivo-demo.uqam.ca/individual/arseneault_paul_uqam_ca");
+        testRenderShortView();
+    }
 
     @Test
+    public void testOneRendershortView() throws IOException {
+        irisList = new ArrayList<>();
+        irisList.add("http://vivo-demo.uqam.ca/individual/abergel_elisabeth_uqam_ca");
+        vClass = "http://vivoweb.org/ontology/core#FacultyMember";
+        testRenderShortView();
+        vClass = "http://vivoweb.org/ontology/core#AcademicDepartment";
+        irisList = new ArrayList<>();
+        irisList.add("http://vivo-demo.uqam.ca/individual/n5951");
+        testRenderShortView();
+        vClass = "http://purl.org/ontology/bibo/AcademicArticle";
+        irisList = new ArrayList<>();
+        irisList.add("http://vivo-demo.uqam.ca/individual/n85825a16-53ab-3f8f-8ed3-8a237ababce6");
+        testRenderShortView();
+    }
+
+    @Test
+    public void testOnePersonRendershortView() throws IOException {
+        irisList = new ArrayList<>();
+        irisList.add("http://vivo-demo.uqam.ca/individual/abergel_elisabeth_uqam_ca");
+        vClass = "http://vivoweb.org/ontology/core#FacultyMember";
+        testRenderShortView();
+    }
     public void testRenderShortView() throws IOException {
-        buildResearchList();
         hreq.addParameter("vclassId", vClass);
         vreq = new VitroRequest(hreq);
         int irisListSize = irisList.size();
@@ -299,7 +323,6 @@ public class GetRenderedSearchIndividualsByVClassTest {
     public void testProcessAcademicDepartment() throws IOException {
         hreq.addParameter("vclassId", "http://vivoweb.org/ontology/core#AcademicDepartment");
         vreq = new VitroRequest(hreq);
-        sm.contextInitialized(sce, false);
         HttpServletResponse resp = new HttpServletResponseStub();
         new GetRenderedSearchIndividualsByVClass(vreq).process(resp);
     }
@@ -308,7 +331,6 @@ public class GetRenderedSearchIndividualsByVClassTest {
     public void testProcessAcademicArticle() throws IOException {
         hreq.addParameter("vclassId", "http://purl.org/ontology/bibo/AcademicArticle");
         vreq = new VitroRequest(hreq);
-        sm.contextInitialized(sce, false);
         HttpServletResponse resp = new HttpServletResponseStub();
         new GetRenderedSearchIndividualsByVClass(vreq).process(resp);
     }
@@ -317,7 +339,6 @@ public class GetRenderedSearchIndividualsByVClassTest {
     public void testProcessEvent() throws IOException {
         hreq.addParameter("vclassId", "http://purl.org/NET/c4dm/event.owl#Event");
         vreq = new VitroRequest(hreq);
-        sm.contextInitialized(sce, false);
         HttpServletResponse resp = new HttpServletResponseStub();
         new GetRenderedSearchIndividualsByVClass(vreq).process(resp);
     }

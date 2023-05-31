@@ -2,9 +2,6 @@ PREFIX rdf:      <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX rdfs:     <http://www.w3.org/2000/01/rdf-schema#> 
 PREFIX xsd:      <http://www.w3.org/2001/XMLSchema#>
 PREFIX owl:      <http://www.w3.org/2002/07/owl#>
-PREFIX swrl:     <http://www.w3.org/2003/11/swrl#>
-PREFIX swrlb:    <http://www.w3.org/2003/11/swrlb#>
-PREFIX vitro:    <http://vitro.mannlib.cornell.edu/ns/vitro/0.7#>
 PREFIX c4o:      <http://purl.org/spar/c4o/>
 PREFIX cito:     <http://purl.org/spar/cito/>
 PREFIX event:    <http://purl.org/NET/c4dm/event.owl#>
@@ -23,42 +20,41 @@ PREFIX skos:     <http://www.w3.org/2004/02/skos/core#>
 PREFIX ocresst:  <http://purl.org/net/OCRe/statistics.owl#>
 PREFIX ocresp:   <http://purl.org/net/OCRe/study_protocol.owl#>
 PREFIX vcard:    <http://www.w3.org/2006/vcard/ns#>
-PREFIX vitrofrca:       <http://vivoweb.org/ontology/vitroAnnotfr_CA#>
-PREFIX vitro-public: <http://vitro.mannlib.cornell.edu/ns/vitro/public#>
-PREFIX vivo:     <http://vivoweb.org/ontology/core#>
+PREFIX vitro:    <http://vitro.mannlib.cornell.edu/ns/vitro/0.7#>
 PREFIX scires:   <http://vivoweb.org/ontology/scientific-research#>
+PREFIX vivocore: <http://vivoweb.org/ontology/core#>
+PREFIX vivoweb:  <http://vivoweb.org/ontology#>
+PREFIX sample:   <http://localhost:8080/vivo_i18n/individual/>
+PREFIX demo-data: <http://vivo-demo.uqam.ca/individual/>
+PREFIX vitrofrca: <http://vivoweb.org/ontology/vitroAnnotfr_CA#>
+PREFIX vitro-public: <http://vitro.mannlib.cornell.edu/ns/vitro/public#>
 CONSTRUCT {
-    ?uri ?p ?o .
-    ?mainImage vitro-public:filename ?o_mainImage .
-    ?thumbnailImage  vitro-public:filename ?o_thumbnailfilename .
-    ?thumbnailImage  vitro-public:downloadLocation ?o_thumbnailLocation .
-    ?most ?p_most ?o_most .
-    ?vIndividual vcard:hasTitle ?vTitle . 
-    ?vTitle vcard:title ?pt . 
+     ?uri ?p ?o .
+     ?mainImage ?p_mainImage ?o_mainImage .
+     ?thumbnailImage ?p_thumbnailImage ?o_thumbnailImage .
+     ?vIndividual ?p_vIndividual ?o_vIndividual . 
+     ?o_vIndividual ?po_vIndividual ?oo_vIndividual .
 }
 where {
-    BIND ( <http://vivo-demo.uqam.ca/individual/n9142cf41-6c97-30b1-a397-57ef5817aca2> AS ?uri) .
+    BIND ( <__INDIVIDUAL_IRI__> AS ?uri) .
     ?uri ?p ?o .
     FILTER ( ! STRENDS( STR(?p), "hasResearchArea") ) .
     FILTER ( ! STRENDS( STR(?p), "relatedBy") ) .
     FILTER ( ! STRENDS( STR(?p), "researchAreaOf") ) .
+    FILTER ( ! STRENDS( STR(?p), "type") ) .
     OPTIONAL {
         ?uri vitro-public:mainImage ?mainImage .
-        OPTIONAL {
-            ?mainImage  vitro-public:thumbnailImage ?thumbnailImage .
-            ?thumbnailImage  vitro-public:filename ?o_thumbnailfilename .
-            ?thumbnailImage  vitro-public:downloadLocation ?o_thumbnailLocation .
-        }
-        ?mainImage vitro-public:filename ?o_mainImage .
+        ?mainImage ?p_mainImage ?o_mainImage .
+        ?mainImage  vitro-public:thumbnailImage ?thumbnailImage .
+        ?thumbnailImage ?p_thumbnailImage ?o_thumbnailImage .
     }
     OPTIONAL {
         ?uri  obo:ARG_2000028 ?vIndividual .  
-        ?vIndividual vcard:hasTitle ?vTitle . 
-        ?vTitle vcard:title ?pt . 
-    }
-    OPTIONAL {
-        ?uri vitro:mostSpecificType ?most .
-        ?most ?p_most ?o_most .
+        ?vIndividual ?p_vIndividual ?o_vIndividual . 
+        ?o_vIndividual ?po_vIndividual ?oo_vIndividual .
+        FILTER ( STRENDS( STR(?p_vIndividual), "hasTitle") ) .
+        FILTER ( ! STRENDS( STR(?p_vIndividual), "type") ) .
+        FILTER ( ! STRENDS( STR(?po_vIndividual), "type") ) .
     }
 }
 

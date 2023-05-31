@@ -2,6 +2,7 @@ package edu.cornell.mannlib.vitro.webapp.dao.jena;
 
 import static org.junit.Assert.*;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -15,6 +16,10 @@ import javax.servlet.ServletContextEvent;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.jena.ontology.OntModel;
+import org.apache.jena.riot.Lang;
+import org.apache.jena.riot.RDFDataMgr;
+import org.apache.log4j.Level;
+import org.apache.log4j.LogManager;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -28,7 +33,11 @@ import edu.cornell.mannlib.vitro.webapp.controller.VitroRequest;
 import edu.cornell.mannlib.vitro.webapp.dao.IndividualDao;
 import edu.cornell.mannlib.vitro.webapp.dao.WebappDaoFactory;
 import edu.cornell.mannlib.vitro.webapp.dao.jena.IndividualBufferedSDB;
+import edu.cornell.mannlib.vitro.webapp.dao.jena.VitroModelSource.ModelName;
 import edu.cornell.mannlib.vitro.webapp.dao.jena.WebappDaoFactoryJena;
+import edu.cornell.mannlib.vitro.webapp.modelaccess.ContextModelAccess;
+import edu.cornell.mannlib.vitro.webapp.modelaccess.ModelAccess;
+import edu.cornell.mannlib.vitro.webapp.modelaccess.ModelNames;
 import edu.cornell.mannlib.vitro.webapp.services.shortview.ShortViewService;
 import edu.cornell.mannlib.vitro.webapp.services.shortview.ShortViewServiceSetup;
 import edu.cornell.mannlib.vitro.webapp.services.shortview.ShortViewService.ShortViewContext;
@@ -111,6 +120,7 @@ public class IndividualBufferedSDBTest {
     public void setUp() throws Exception {
         iriString = "http://vivo-demo.uqam.ca/individual/agbobli_christian_uqam_ca";
 //        iriString = "http://vivo-demo.uqam.ca/individual/n6324";
+        iriString="http://localhost:8080/vivo_i18n/individual/n733";
     }
 
     private void setupBufferedIndividualContext() {
@@ -192,16 +202,27 @@ public class IndividualBufferedSDBTest {
         individual.getThumbUrl();
         analyse();
     }
+    @Test
+    public void testModelAccess() {
+        ContextModelAccess ctxModel = ModelAccess.on(ctx);
+        OntModel model = ctxModel.getOntModel(ModelNames.TBOX_ASSERTIONS);
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        RDFDataMgr.write(stream, model, Lang.TURTLE);
+        log.info(stream);
+    }
 
     @Test
     public void testManyFunctionsBuffered() {
+        iriString = "http://vivo-demo.uqam.ca/individual/agbobli_christian_uqam_ca";
         setupBufferedIndividualContext();
-        individual.getMostSpecificTypeURIs();
-        individual.getMainImageUri();
-        individual.getImageUrl();
-        individual.getName();
-        individual.getNamespace();
-        individual.getThumbUrl();
+        String name = individual.getName();
+        String ns = individual.getNamespace();
+        LogManager.getRootLogger().setLevel(Level.TRACE);
+        List<String> msp = individual.getMostSpecificTypeURIs();
+        String mainImUri = individual.getMainImageUri();
+        String imUrl = individual.getImageUrl();
+        String thUrl = individual.getThumbUrl();
+        log.info("name="+ name +"\nns="+ ns +"\nmsp="+ msp.get(0) +"\nmainImUri="+mainImUri +"\nimUrl="+ imUrl +"\nthUrl="+ thUrl);
         analyse();
     }
 }
