@@ -20,6 +20,7 @@ import org.apache.jena.riot.Lang;
 import org.apache.jena.riot.RDFDataMgr;
 import org.apache.log4j.Level;
 import org.apache.log4j.LogManager;
+import org.apache.log4j.spi.Configurator;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -224,5 +225,77 @@ public class IndividualBufferedSDBTest {
         String thUrl = individual.getThumbUrl();
         log.info("name="+ name +"\nns="+ ns +"\nmsp="+ msp.get(0) +"\nmainImUri="+mainImUri +"\nimUrl="+ imUrl +"\nthUrl="+ thUrl);
         analyse();
+    }
+    
+    @Test
+    public void testCompareGetImageUrl() {
+        testGetImageUrlBuffered();
+        testGetImageUrlNotBuffered();
+    }
+    
+    @Test
+    public void testGetImageUrlBuffered() {
+        iriString = "http://vivo-demo.uqam.ca/individual/agbobli_christian_uqam_ca";
+        LogManager.getLogger(IndividualBufferedSDB.class.getName()).setLevel(Level.DEBUG);
+        IndividualDao iDao;
+        iDao = vreq.getBufferedIndividualWebappDaoFactory().getIndividualDao();
+//        LogManager.getRootLogger().setLevel(Level.DEBUG);
+        Individual individual = iDao.getIndividualByURI(iriString);
+        String imUrl = individual.getImageUrl();
+        LogManager.getRootLogger().setLevel(Level.INFO);
+//        LogManager.getLogger(IndividualBufferedSDB.class.getName()).setLevel(Level.INFO);
+        log.info("imUrl = "+imUrl);
+    }
+    @Test
+    public void testGetImageUrlNotBuffered() {
+        iriString = "http://vivo-demo.uqam.ca/individual/agbobli_christian_uqam_ca";
+        IndividualDao iDao;
+        iDao = vreq.getWebappDaoFactory().getIndividualDao();
+        Individual individual = iDao.getIndividualByURI(iriString);
+        LogManager.getRootLogger().setLevel(Level.DEBUG);
+        String imUrl = individual.getImageUrl();
+        LogManager.getRootLogger().setLevel(Level.INFO);
+        log.info("imUrl = "+imUrl);
+    }
+    @Test
+    public void testOrganisationBuffered() {
+        iriString = "http://vivo-demo.uqam.ca/individual/n2350";
+        testIndividualBuffered(iriString);
+    }
+    @Test
+    public void testPersonBuffered() {
+        iriString = "http://vivo-demo.uqam.ca/individual/agbobli_christian_uqam_ca";
+        testIndividualBuffered(iriString);
+    }
+    public void testIndividualBuffered(String iriString) {
+        IndividualDao iDao;
+        iDao = vreq.getBufferedIndividualWebappDaoFactory().getIndividualDao();
+        LogManager.getRootLogger().setLevel(Level.INFO);
+        Individual individual = iDao.getIndividualByURI(iriString);
+        String name = individual.getName();
+        LogManager.getRootLogger().setLevel(Level.INFO);
+        log.info("name = "+name);
+        log.info("individual = "+individual);
+    }
+    
+    @Test
+    public void testOrganisationNotBuffered() {
+        iriString = "http://vivo-demo.uqam.ca/individual/n2350";
+        testIndividualNotBuffered(iriString);
+    }
+    @Test
+    public void testPersonNotBuffered() {
+        iriString = "http://vivo-demo.uqam.ca/individual/agbobli_christian_uqam_ca";
+        testIndividualNotBuffered(iriString);
+    }
+    public void testIndividualNotBuffered(String iriString) {
+        IndividualDao iDao;
+        iDao = vreq.getWebappDaoFactory().getIndividualDao();
+        LogManager.getRootLogger().setLevel(Level.INFO);
+        Individual individual = iDao.getIndividualByURI(iriString);
+        String label = individual.getRdfsLabel();
+        LogManager.getRootLogger().setLevel(Level.INFO);
+        log.info("name = "+label);
+        log.info("individual = "+individual);
     }
 }

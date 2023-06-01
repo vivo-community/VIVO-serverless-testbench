@@ -34,6 +34,8 @@ CONSTRUCT {
      ?thumbnailImage ?p_thumbnailImage ?o_thumbnailImage .
      ?vIndividual ?p_vIndividual ?o_vIndividual . 
      ?o_vIndividual ?po_vIndividual ?oo_vIndividual .
+     ?o_imgLoc ?po_imgLoc ?oo_imgLoc .
+     ?o_imgThumLoc ?po_imgThumLoc ?oo_imgThumLoc .
 }
 where {
     BIND ( <__INDIVIDUAL_IRI__> AS ?uri) .
@@ -42,17 +44,31 @@ where {
     FILTER ( ! STRENDS( STR(?p), "relatedBy") ) .
     FILTER ( ! STRENDS( STR(?p), "researchAreaOf") ) .
     FILTER ( ! STRENDS( STR(?p), "type") ) .
+    FILTER ( ! STRENDS( STR(?p), "hasKey") ) .
     OPTIONAL {
         ?uri vitro-public:mainImage ?mainImage .
         ?mainImage ?p_mainImage ?o_mainImage .
+        FILTER ( ! STRENDS( STR(?p_mainImage), "modTime") ) .
+        OPTIONAL {
+            ?mainImage vitro-public:downloadLocation ?o_imgLoc .
+            ?o_imgLoc ?po_imgLoc ?oo_imgLoc .
+            FILTER ( ! STRENDS( STR(?po_imgLoc), "modTime") ) .
+            FILTER ( ! STRENDS( STR(?po_imgLoc), "type") ) .
+        }
         ?mainImage  vitro-public:thumbnailImage ?thumbnailImage .
         ?thumbnailImage ?p_thumbnailImage ?o_thumbnailImage .
+        FILTER ( ! STRENDS( STR(?p_thumbnailImage), "modTime") ) .
+        OPTIONAL {
+            ?thumbnailImage vitro-public:downloadLocation ?o_imgThumLoc .
+            ?o_imgThumLoc ?po_imgThumLoc ?oo_imgThumLoc .
+            FILTER ( ! STRENDS( STR(?po_imgThumLoc), "modTime") ) .
+        }
     }
     OPTIONAL {
         ?uri  obo:ARG_2000028 ?vIndividual .  
         ?vIndividual ?p_vIndividual ?o_vIndividual . 
-        ?o_vIndividual ?po_vIndividual ?oo_vIndividual .
         FILTER ( STRENDS( STR(?p_vIndividual), "hasTitle") ) .
+        ?o_vIndividual ?po_vIndividual ?oo_vIndividual .
         FILTER ( ! STRENDS( STR(?p_vIndividual), "type") ) .
         FILTER ( ! STRENDS( STR(?po_vIndividual), "type") ) .
     }
