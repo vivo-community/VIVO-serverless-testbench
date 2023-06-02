@@ -30,6 +30,8 @@ import org.junit.runners.MethodSorters;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
+import edu.cornell.mannlib.vitro.webapp.config.ConfigurationProperties;
+import edu.cornell.mannlib.vitro.webapp.config.ConfigurationPropertiesImpl;
 import edu.cornell.mannlib.vitro.webapp.controller.VitroRequest;
 import edu.cornell.mannlib.vitro.webapp.startup.StartupManager;
 import edu.cornell.mannlib.vitro.webapp.startup.StartupStatus;
@@ -53,6 +55,7 @@ public class GetRenderedSearchIndividualsByVClassTest {
 
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
+        LogManager.getLogger(ConfigurationPropertiesImpl.class.getName()).setLevel(Level.DEBUG);
         System.setProperty("vitro.home", (new File("src/main/resources")).getAbsolutePath() + "/vivo/home");
         ctx = new ServletContextStub();
         sm = new StartupManager();
@@ -171,6 +174,10 @@ public class GetRenderedSearchIndividualsByVClassTest {
     }
     @Test
     public void testPersonsList() throws IOException {
+        buildPersonList();
+        testRenderShortView();
+    }
+    public void buildPersonList() {
         vClass = "http://vivoweb.org/ontology/core#FacultyMember";
         irisList = new ArrayList<>();
         irisList.add("http://vivo-demo.uqam.ca/individual/abergel_elisabeth_uqam_ca");
@@ -202,9 +209,7 @@ public class GetRenderedSearchIndividualsByVClassTest {
         irisList.add("http://vivo-demo.uqam.ca/individual/armony_victor_uqam_ca");
         irisList.add("http://vivo-demo.uqam.ca/individual/arroyo_pardo_paulina_uqam_ca");
         irisList.add("http://vivo-demo.uqam.ca/individual/arseneault_paul_uqam_ca");
-        testRenderShortView();
     }
-
     @Test
     public void testOneRendershortView() throws IOException {
         irisList = new ArrayList<>();
@@ -250,8 +255,7 @@ public class GetRenderedSearchIndividualsByVClassTest {
 
     @Test
     public void testParallelRenderShortView() throws IOException {
-        buildOrganisationList();
-        String vClass = "http://vivoweb.org/ontology/core#AcademicDepartment";
+        buildPersonList();
         hreq.addParameter("vclassId", vClass);
         vreq = new VitroRequest(hreq);
         Instant t0 = Instant.now();
@@ -315,6 +319,12 @@ public class GetRenderedSearchIndividualsByVClassTest {
     public void testProcessFacultyMember() throws IOException {
         hreq.addParameter("vclassId", "http://vivoweb.org/ontology/core#FacultyMember");
         vreq = new VitroRequest(hreq);
+        ConfigurationProperties prop = ConfigurationProperties.getBean(vreq);
+        log.info(prop.toString().replace(',', '\n'));
+//        prop.set(GetRenderedSearchIndividualsByVClass.RENDERED_SEARCH_INDIVIDUAL_BUFFERED, "true");
+//        prop.set(GetRenderedSearchIndividualsByVClass.RENDERED_SEARCH_INDIVIDUAL_PARALLEL_PROCESSING, "true");
+//        prop.set(GetRenderedSearchIndividualsByVClass.RENDERED_SEARCH_INDIVIDUAL_ANALYSE_PROCESS, "true");
+        log.info(prop.toString());
         HttpServletResponse resp = new HttpServletResponseStub();
         new GetRenderedSearchIndividualsByVClass(vreq).process(resp);
     }
